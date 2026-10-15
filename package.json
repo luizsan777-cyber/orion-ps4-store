@@ -1,0 +1,9 @@
+{
+  "name": "orion-ps4-store",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Loja de homebrews autorizados com interface para PS4 e backend de catalogo",
+  "scripts": {"start":"node server/index.js", "test":"node --test tests/*.test.js", "build:preview":"node scripts/build-preview.js"},
+  "engines":{"node":">=18"},
+  "license":"MIT"
+}

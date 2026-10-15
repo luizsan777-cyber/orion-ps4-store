@@ -53,6 +53,10 @@ Teclado na prévia: Tab/Enter, setas, / buscar, Esc voltar. Controle via Gamepad
 5. Testes em 5.05, 6.72, 9.00, 11.00 e outras versões **somente onde homebrew for suportado**, sem compatibilidade universal presumida.
 6. Auditoria de licenças, segurança, qualidade e suporte antes da venda.
 
+## Publicar no GitHub
+
+Instruções em [`docs/GITHUB.md`](docs/GITHUB.md). Nenhum repositório remoto é criado automaticamente pelo código.
+
 ## Fontes de pesquisa
 
 - https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain

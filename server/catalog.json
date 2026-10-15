@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "updatedAt": "2026-10-15",
+  "items": [
+    {"id":"demo-corrida","title":"Corrida Nebulosa","category":"Corrida","description":"Item ilustrativo para testes do layout. Nao representa um jogo disponivel.","sizeBytes":0,"version":"Demo","author":"Projeto de interface","downloadUrl":null,"sha256":null,"contentId":null,"colors":["#087aaf","#102656"],"label":"DEMONSTRACAO"},
+    {"id":"demo-plataforma","title":"Mundo Pixel","category":"Plataforma","description":"Cartao ficticio. Publique somente arquivos PKG que voce possa distribuir legalmente.","sizeBytes":0,"version":"Demo","author":"Projeto de interface","downloadUrl":null,"sha256":null,"contentId":null,"colors":["#9c3580","#261349"],"label":"DEMONSTRACAO"},
+    {"id":"demo-aventura","title":"Horizonte Lunar","category":"Aventura","description":"Exemplo de vitrine; nenhum jogo ou download real acompanha este projeto.","sizeBytes":0,"version":"Demo","author":"Projeto de interface","downloadUrl":null,"sha256":null,"contentId":null,"colors":["#bb5625","#30144c"],"label":"DEMONSTRACAO"},
+    {"id":"demo-arcade","title":"Circuito Neon","category":"Arcade","description":"Exemplo para visualizar navegacao por categorias e pesquisa.","sizeBytes":0,"version":"Demo","author":"Projeto de interface","downloadUrl":null,"sha256":null,"contentId":null,"colors":["#155cc6","#130b4b"],"label":"DEMONSTRACAO"},
+    {"id":"demo-puzzle","title":"Labirinto Azul","category":"Puzzle","description":"Exemplo sem arquivo PKG vinculado.","sizeBytes":0,"version":"Demo","author":"Projeto de interface","downloadUrl":null,"sha256":null,"contentId":null,"colors":["#03978e","#173652"],"label":"DEMONSTRACAO"},
+    {"id":"demo-rpg","title":"Lendas do Norte","category":"RPG","description":"Cartao demonstrativo do catalogo remoto.","sizeBytes":0,"version":"Demo","author":"Projeto de interface","downloadUrl":null,"sha256":null,"contentId":null,"colors":["#8e6138","#202044"],"label":"DEMONSTRACAO"}
+  ]
+}

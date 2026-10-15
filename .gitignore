@@ -1,0 +1,9 @@
+node_modules/
+.DS_Store
+*.pkg
+*.elf
+*.oelf
+*.o
+build/
+.cache/
+dist/
