@@ -1,0 +1,15 @@
+'use strict';
+const {test}=require('node:test');const assert=require('node:assert/strict');const fs=require('node:fs');const path=require('node:path');
+const {validateEdition,publicHttpsUrl}=require('../schema');
+const data=JSON.parse(fs.readFileSync(path.join(__dirname,'../catalog.json'),'utf8'));
+const clone=()=>structuredClone(data);
+test('edicao teste contem exclusivamente tres jogos e Rayman Legends',()=>{assert.equal(data.items.length,3);assert.ok(data.items.some(x=>x.id==='rayman-legends'));assert.deepEqual(validateEdition(data),[])});
+test('rayman nao oferece PKG comercial sem autorizacao',()=>{const x=data.items.find(x=>x.id==='rayman-legends');assert.equal(x.publisherRights,'third-party-restricted');assert.ok(x.variants.every(v=>v.downloadUrl===null&&v.status==='restricted'))});
+test('idiomas usam estados explicitos, sem presumir dublagem',()=>{for(const x of data.items)assert.ok(x.language.audioPtBR&&x.language.subtitlesPtBR&&x.language.interfacePtBR&&x.language.note)});
+test('rejeita URL local e HTTP',()=>{for(const x of ['http://site.org/a.pkg','https://localhost/a.pkg','https://127.0.0.1/a.pkg','https://site.local/a.pkg','https://user:pass@host.org/a.pkg'])assert.equal(publicHttpsUrl(x),false);assert.equal(publicHttpsUrl('https://cdn.example.org/games/test.pkg'),true)});
+test('rejeita catalogo com mais de tres jogos',()=>{const x=clone();x.items.push({...x.items[1],id:'quarto-jogo'});assert.ok(validateEdition(x).length)});
+test('rejeita link de jogo comercial sem licenca',()=>{const x=clone();const v=x.items[0].variants[0];v.status='available';v.downloadUrl='https://cdn.example.org/rayman.pkg';v.sha256='a'.repeat(64);v.contentId='X'.repeat(24);v.sizeBytes=1000;assert.ok(validateEdition(x).some(s=>s.includes('autorizacao')))});
+test('rejeita link PKG disponivel sem SHA-256',()=>{const x=clone();const v=x.items[1].variants[1];v.status='available';v.downloadUrl='https://cdn.example.org/orion.pkg';v.sha256=null;v.contentId='X'.repeat(24);v.sizeBytes=1000;assert.ok(validateEdition(x).some(s=>s.includes('SHA-256')))});
+test('rejeita download ficticio em opcoes pendentes',()=>{const x=clone();x.items[2].variants[1].downloadUrl='https://host.org/nao-existe.pkg';assert.ok(validateEdition(x).some(s=>s.includes('ficticio')))});
+test('nao permite preview comercial de terceiros',()=>{const x=clone();x.items[0].variants[0].kind='browser-preview';x.items[0].variants[0].status='preview';assert.ok(validateEdition(x).some(s=>s.includes('nao autorizado')))});
+test('catalogo deve ter IDs unicos',()=>{const x=clone();x.items[2].id=x.items[1].id;assert.ok(validateEdition(x).some(s=>s.includes('duplicado')))});

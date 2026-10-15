@@ -1,0 +1,32 @@
+name: Orion TESTE - validar interface nativa
+on:
+  push:
+    branches: ["teste/**"]
+    paths:
+      - "teste/**"
+      - ".github/workflows/teste-native.yml"
+  pull_request:
+    paths:
+      - "teste/**"
+      - ".github/workflows/teste-native.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar dados, prototipos e codigo C++11
+        run: |
+          cd teste
+          npm test
+      - name: Conferir arquivos essenciais do pacote
+        run: |
+          test -s teste/ps4/sce_sys/icon0.png
+          test -s teste/ps4/assets/font.bmp
+          test -s teste/ps4/Makefile
+          test -s teste/ps4/ui_model.cpp

@@ -1,74 +1,68 @@
 {
-  "version": "0.3.0-teste",
-  "distribution": "authorized-only",
+  "edition": "teste",
+  "version": "0.3.0-test",
+  "generatedAt": "2026-10-15",
   "items": [
     {
       "id": "rayman-legends",
       "title": "Rayman Legends",
-      "type": "commercial-reference",
-      "downloadEnabled": false,
-      "localization": {
-        "audioPtBr": "nao-confirmado",
-        "subtitlesPtBr": "nao-confirmado",
-        "interfacePtBr": "nao-confirmado"
+      "category": "Plataforma",
+      "developer": "Ubisoft Montpellier",
+      "description": "Aventura de plataforma da Ubisoft para PS4. Entrada de referência: sem pacote ou distribuição licenciada vinculada à Orion.",
+      "publisherRights": "third-party-restricted",
+      "accent": ["#e0a344", "#6c2344"],
+      "language": {
+        "audioPtBR": "unknown",
+        "subtitlesPtBR": "unknown",
+        "interfacePtBR": "unknown",
+        "note": "Não há confirmação de português brasileiro para a edição de PS4 desta região; não confundir com remakes ou versões de outros consoles.",
+        "source": "https://store.playstation.com/pt-pt/product/EP0001-CUSA00031_00-RAYMANLEGENDS001/"
       },
-      "downloads": [
-        {
-          "label": "Versão PS4",
-          "status": "indisponivel",
-          "reason": "Exige fonte licenciada e metadados verificados"
-        },
-        {
-          "label": "Atualização",
-          "status": "indisponivel",
-          "reason": "Exige distribuição autorizada"
-        }
+      "variants": [
+        {"id": "base", "label": "Jogo base (PS4)", "kind": "pkg", "status": "restricted", "downloadUrl": null, "sha256": null, "contentId": null, "sizeBytes": null, "description": "Distribuição depende de autorização da Ubisoft."},
+        {"id": "patch", "label": "Atualização oficial", "kind": "pkg", "status": "restricted", "downloadUrl": null, "sha256": null, "contentId": null, "sizeBytes": null, "description": "Sem pacote autorizado para redistribuição."}
       ]
     },
     {
       "id": "orbita-neon",
       "title": "Órbita Neon",
-      "type": "original-homebrew",
-      "downloadEnabled": false,
-      "localization": {
-        "audioPtBr": "sem-dialogos",
-        "subtitlesPtBr": "nao-aplicavel",
-        "interfacePtBr": "sim"
+      "category": "Arcade",
+      "developer": "Orion Lab",
+      "description": "Minijogo original: desvie dos meteoros e acumule pontos. Protótipo jogável no navegador, ainda sem PKG de PS4.",
+      "publisherRights": "original-owned",
+      "accent": ["#00a7e8", "#183466"],
+      "gameType": "orbit",
+      "language": {
+        "audioPtBR": "no-voices",
+        "subtitlesPtBR": "not-applicable",
+        "interfacePtBR": "yes",
+        "note": "Jogo sem diálogo ou vozes; interface e instruções em português do Brasil.",
+        "source": "internal-original"
       },
-      "downloads": [
-        {
-          "label": "Jogo base",
-          "status": "aguardando-pkg",
-          "reason": "Protótipo jogável apenas na prévia HTML"
-        },
-        {
-          "label": "Versão leve",
-          "status": "aguardando-pkg",
-          "reason": "Build PS4 ainda não gerada"
-        }
+      "variants": [
+        {"id": "demo", "label": "Experimentar protótipo", "kind": "browser-preview", "status": "preview", "downloadUrl": null, "sha256": null, "contentId": null, "sizeBytes": null, "description": "Jogar a demonstração local sem anúncios (não é um PKG)."},
+        {"id": "pkg", "label": "Versão PS4 — PKG", "kind": "pkg", "status": "pending", "downloadUrl": null, "sha256": null, "contentId": null, "sizeBytes": null, "description": "Habilitar após gerar, assinar, hospedar e testar o PKG."}
       ]
     },
     {
       "id": "labirinto-de-luz",
       "title": "Labirinto de Luz",
-      "type": "original-homebrew",
-      "downloadEnabled": false,
-      "localization": {
-        "audioPtBr": "sem-dialogos",
-        "subtitlesPtBr": "nao-aplicavel",
-        "interfacePtBr": "sim"
+      "category": "Puzzle",
+      "developer": "Orion Lab",
+      "description": "Minijogo original: navegue por um labirinto pequeno até alcançar o portal. Protótipo jogável no navegador, ainda sem PKG de PS4.",
+      "publisherRights": "original-owned",
+      "accent": ["#17be91", "#104352"],
+      "gameType": "maze",
+      "language": {
+        "audioPtBR": "no-voices",
+        "subtitlesPtBR": "not-applicable",
+        "interfacePtBR": "yes",
+        "note": "Jogo sem diálogos; instruções e menus em português brasileiro.",
+        "source": "internal-original"
       },
-      "downloads": [
-        {
-          "label": "Jogo base",
-          "status": "aguardando-pkg",
-          "reason": "Protótipo jogável apenas na prévia HTML"
-        },
-        {
-          "label": "Versão leve",
-          "status": "aguardando-pkg",
-          "reason": "Build PS4 ainda não gerada"
-        }
+      "variants": [
+        {"id": "demo", "label": "Experimentar protótipo", "kind": "browser-preview", "status": "preview", "downloadUrl": null, "sha256": null, "contentId": null, "sizeBytes": null, "description": "Jogar a demonstração local sem anúncios (não é um PKG)."},
+        {"id": "pkg", "label": "Versão PS4 — PKG", "kind": "pkg", "status": "pending", "downloadUrl": null, "sha256": null, "contentId": null, "sizeBytes": null, "description": "Aguardando compilação e testes em firmware suportado."}
       ]
     }
   ]

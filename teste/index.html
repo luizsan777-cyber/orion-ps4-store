@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="color-scheme" content="dark"><title>Orion TESTE | PS4</title><link rel="stylesheet" href="./style.css"></head>
+<body>
+<div class="shell">
+ <aside class="rail">
+  <div class="logo"><span class="symbol">✦</span><span><b>ORION</b><small>STORE <em>TESTE</em></small></span></div>
+  <span class="overline">NAVEGAR</span>
+  <nav aria-label="Categorias" id="menu"><button class="menu active" data-mode="inicio">⌂ <span>Início</span></button><button class="menu" data-mode="todos">▦ <span>3 jogos</span></button><button class="menu" data-mode="plataforma">◈ <span>Plataforma</span></button><button class="menu" data-mode="arcade">◇ <span>Arcade</span></button><button class="menu" data-mode="puzzle">▤ <span>Quebra-cabeças</span></button><button class="menu" data-mode="downloads">↓ <span>Downloads</span></button></nav>
+  <div class="railfoot"><span class="ready">●</span><div><strong>Modo de avaliação</strong><small>3 títulos · sem anúncios</small></div></div>
+ </aside>
+ <main class="main">
+  <header class="top"><span class="crumb">ORION <i>/</i> <strong id="currentSection">Início</strong></span><div class="status"><span class="test">EDIÇÃO TESTE</span><button id="searchButton" class="iconbtn" aria-label="Pesquisar">⌕</button></div></header>
+  <div class="body">
+   <section class="hero"><div class="stripes"></div><div class="hero-copy"><div class="eyebrow">VERSÃO DE AVALIAÇÃO • CATÁLOGO LIMITADO</div><h1>Seu jogo.<br><span>Seu ritmo.</span></h1><p>Explore os detalhes, veja os idiomas e escolha uma edição. Jogos originais têm prévia jogável; PKGs só serão liberados após a validação.</p><button id="explore" class="primary">Explorar os 3 jogos <span>→</span></button></div><div class="orb"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="nucleus">✦</div></div></section>
+   <div class="sectionHead"><div><span class="eyebrow" id="hint">SELEÇÃO DE TESTE</span><h2 id="headline">Jogos disponíveis no catálogo</h2></div><span class="count" id="count">3 títulos</span></div>
+   <div class="searchwrap hidden" id="searchWrap"><label for="search">Pesquisar no catálogo</label><input id="search" placeholder="Pesquisar jogo ou categoria..." autocomplete="off"><button id="clear">Limpar</button></div>
+   <div class="cards" id="cards"></div>
+   <p id="empty" class="empty hidden">Nenhum título encontrado.</p>
+   <section id="downloadsInfo" class="info hidden"><h3>Downloads e instalações</h3><p>Nenhum PKG foi autorizado e hospedado nesta edição. A prévia executa apenas jogos originais no navegador. Quando habilitado, o instalador nativo usará tarefas compatíveis com PS4 sem abrir sites.</p><p><b>Política definida:</b> menu inicial = instalar; durante o jogo = notificar e aguardar. Requer integração nativa e teste no console.</p></section>
+  </div>
+  <footer><span>✕ Selecionar</span><span>◯ Voltar</span><span>△ Pesquisar</span><span class="disclaimer">Projeto independente · Sem associação com a Sony</span></footer>
+ </main>
+</div>
+<div id="detailShade" class="shade hidden" role="dialog" aria-modal="true" aria-label="Opções de jogo"><div class="detail"><button class="close" id="closeDetail" aria-label="Voltar">×</button><div id="detailArt" class="detailArt"><div class="detailMark">✦</div><span id="detailArtTitle"></span><small>ORION TESTE</small></div><div class="detailBody"><span id="detailCategory" class="eyebrow"></span><h2 id="detailTitle"></h2><p id="detailText"></p><section class="languages"><div><span>Áudio PT-BR</span><b id="voice"></b></div><div><span>Legendas PT-BR</span><b id="subs"></b></div><div><span>Interface PT-BR</span><b id="interface"></b></div></section><p class="languageNote" id="languageNote"></p><h3 class="optionsTitle">Opções desta edição</h3><div id="options" class="options"></div><p id="optionMessage" class="optionMessage" role="status"></p></div></div></div>
+<div id="playShade" class="shade hidden" role="dialog" aria-modal="true" aria-label="Protótipo jogável"><div class="play"><div class="playtop"><div><span class="eyebrow">PROTÓTIPO ORIGINAL</span><h2 id="playTitle"></h2></div><button id="closePlay" class="close" aria-label="Fechar demonstração">×</button></div><p id="playGuide"></p><canvas id="game" width="540" height="320" aria-label="Jogo demonstrativo"></canvas><div class="playbottom"><span id="gameInfo" aria-live="polite">Use as setas do teclado</span><button id="restart">Reiniciar ↻</button></div></div></div>
+<div id="toast" class="toast hidden" role="status"></div>
+<script src="./app.js" defer></script></body></html>
