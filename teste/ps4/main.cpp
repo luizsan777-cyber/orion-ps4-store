@@ -2,7 +2,6 @@
 // The program DOES NOT download, install or provide third-party games.
 #include <SDL2/SDL.h>
 #include <cstdio>
-#include <string>
 #include "ui_model.hpp"
 
 using namespace orion_teste;
@@ -24,14 +23,14 @@ static void border(int x,int y,int w,int h,SDL_Color color){
     SDL_SetRenderDrawColor(renderer,color.r,color.g,color.b,color.a);
     SDL_Rect rectangle={x,y,w,h};SDL_RenderDrawRect(renderer,&rectangle);
 }
-static void label(int x,int y,const std::string& source,int scale=1,SDL_Color tint={232,243,255,255}) {
+static void label(int x,int y,const char* source,int scale=1,SDL_Color tint={232,243,255,255}) {
     if (!fontTexture) return;
     SDL_SetTextureColorMod(fontTexture,tint.r,tint.g,tint.b);
-    for (size_t i=0;i<source.size();++i) {
+    for (int i=0;source[i] != '\0';++i) {
         unsigned char c=(unsigned char)source[i]; if(c<32 || c>126)c='?';
         int index=(int)c-32;
         SDL_Rect src={(index%16)*20,(index/16)*32,20,32};
-        SDL_Rect dst={x+(int)i*11*scale,y,12*scale,20*scale};
+        SDL_Rect dst={x+i*11*scale,y,12*scale,20*scale};
         SDL_RenderCopy(renderer,fontTexture,&src,&dst);
     }
 }
@@ -51,9 +50,10 @@ static void drawDetails() {
     label(587,124,g.title,2);
     label(588,182,g.category,1,muted);
     label(588,219,g.description,1,muted);
-    label(588,270,std::string("AUDIO PT-BR: ")+languageLabel(g.audioPtBr));
-    label(588,299,std::string("LEGENDAS PT-BR: ")+languageLabel(g.subtitlesPtBr));
-    label(588,328,std::string("INTERFACE PT-BR: ")+languageLabel(g.interfacePtBr));
+    char langBuffer[100];
+    std::snprintf(langBuffer,sizeof(langBuffer),"AUDIO PT-BR: %s",languageLabel(g.audioPtBr)); label(588,270,langBuffer);
+    std::snprintf(langBuffer,sizeof(langBuffer),"LEGENDAS PT-BR: %s",languageLabel(g.subtitlesPtBr)); label(588,299,langBuffer);
+    std::snprintf(langBuffer,sizeof(langBuffer),"INTERFACE PT-BR: %s",languageLabel(g.interfacePtBr)); label(588,328,langBuffer);
     label(588,378,"OPCOES DE DOWNLOAD",1,blue);
     for(int option=0;option<2;option++){
         int top=411+option*74;bool selected=model.selectedVariant==option;
@@ -75,7 +75,8 @@ static void draw() {
         label(27,y+13,sectionNames[i],1,selected?pale:muted);
     }
     label(24,663,"VERSAO TESTE",1,muted);
-    label(280,43,std::string("ORION / ")+sectionNames[(int)model.section],1,muted);
+    char sectionBuffer[64]; std::snprintf(sectionBuffer,sizeof(sectionBuffer),"ORION / %s",sectionNames[(int)model.section]);
+    label(280,43,sectionBuffer,1,muted);
     if(model.section==HOME){
         fill(281,91,935,245,{19,68,108,255});label(317,130,"ORION STORE",3);
         label(318,204,"EDICAO TESTE",2,blue);label(319,281,"3 TITULOS. ZERO ANUNCIOS.",1,muted);
