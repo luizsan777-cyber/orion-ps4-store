@@ -21,7 +21,7 @@ FILES      := main.cpp ui_model.cpp
 OBJECTS    := $(patsubst %.cpp,$(BUILD)/%.o,$(FILES))
 ASSETS     := $(wildcard assets/*)
 MODULES    := $(wildcard sce_module/*)
-LIBS       := -lc -lkernel -lc++ -lSceUserService -lSceVideoOut -lScePad -lSceSysmodule -lSDL2
+LIBS       := -lc -lkernel -lc++ -lSceUserService -lSceSystemService -lSceVideoOut -lSceAudioOut -lScePad -lSceSysmodule -lSDL2
 CXXFLAGS   := --target=x86_64-pc-freebsd12-elf -std=c++11 -O2 -fPIC -funwind-tables -fno-exceptions -fno-rtti -c -isysroot $(TOOLCHAIN) -isystem $(TOOLCHAIN)/include -isystem $(TOOLCHAIN)/include/c++/v1
 LDFLAGS    := -m elf_x86_64 -pie --script $(TOOLCHAIN)/link.x --eh-frame-hdr -L$(TOOLCHAIN)/lib $(LIBS) $(TOOLCHAIN)/lib/crt1.o
 
