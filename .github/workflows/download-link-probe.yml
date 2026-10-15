@@ -1,0 +1,51 @@
+name: Diagnóstico de download direto (homebrew autorizado)
+on:
+  push:
+    branches:
+      - teste/alpha-0.4
+    paths:
+      - .github/workflows/download-link-probe.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Testar HTTP e Range sem baixar o pacote inteiro
+        shell: bash
+        env:
+          URL: https://github.com/Ninedark9/PS4PackageLink/releases/download/v0.6.4/ps4packagelink_en.pkg
+        run: |
+          set -euo pipefail
+          echo 'ALVO: PKG homebrew público do autor; não é um jogo comercial.'
+          echo 'ETAPA 1: HEAD com redirects'
+          curl -sSLI --connect-timeout 10 --max-time 40 --retry 1 --dump-header head.txt -o /dev/null "$URL"
+          grep -iE '^HTTP/|^content-type:|^content-length:|^accept-ranges:|^content-range:' head.txt || true
+          echo 'ETAPA 2: GET parcial bytes=0-31'
+          curl -sSL --connect-timeout 10 --max-time 45 --retry 1 --range 0-31 --dump-header range.txt -o first32.bin "$URL"
+          grep -iE '^HTTP/|^content-type:|^content-length:|^accept-ranges:|^content-range:' range.txt || true
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          h = Path('range.txt').read_text(errors='replace')
+          size = Path('first32.bin').stat().st_size
+          statuses = re.findall(r'(?im)^HTTP/\S+\s+(\d+)', h)
+          ranges = re.findall(r'(?im)^content-range:\s*(.+?)\r?$', h)
+          final = statuses[-1] if statuses else '???'
+          ok = final == '206' and size == 32 and bool(ranges)
+          print('HTTP_FINAL:', final)
+          print('PARTIAL_BYTES:', size)
+          print('CONTENT_RANGE:', ranges[-1] if ranges else 'ausente')
+          print('RANGE_CONFIRMADO:', 'SIM' if ok else 'NAO')
+          if size <= 256: print('ASSINATURA_HEX:', Path('first32.bin').read_bytes()[:16].hex())
+          with open('resultado.md', 'w') as out:
+              out.write('# Teste de link direto (PKG homebrew autorizado)\n\n')
+              out.write(f'- HTTP final: {final}\n')
+              out.write(f'- Bytes recebidos: {size}\n')
+              out.write(f'- Content-Range: {ranges[-1] if ranges else "ausente"}\n')
+              out.write(f'- Download parcial/retomada: {"confirmado" if ok else "nao confirmado"}\n')
+              out.write('- Nao demonstra compatibilidade com links de jogos de terceiros ou execucao no PS4.\n')
+          PY
+          cat resultado.md >> "$GITHUB_STEP_SUMMARY"
