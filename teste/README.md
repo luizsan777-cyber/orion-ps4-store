@@ -1,4 +1,4 @@
-# ORION STORE TESTE — 0.3.0-test
+# ORION STORE TESTE — 0.4.0-test
 
 Edição de avaliação **separada** da loja principal. Contém somente **três cartões**:
 
