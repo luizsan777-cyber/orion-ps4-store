@@ -1,0 +1,31 @@
+name: Importar fonte Alpha 0.2
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'bootstrap/orion-source.tar.xz'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Validar e importar pacote do projeto
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f bootstrap/orion-source.tar.xz
+          echo "d7210d6e3081bb2ce9a349f74d6ca2e39478c43dfa2c219ee7666382f9b18c60  bootstrap/orion-source.tar.xz" | sha256sum -c -
+          tar -tJf bootstrap/orion-source.tar.xz | grep -Ev '^(/|.*\.\./)' > /tmp/valid-paths
+          test "$(wc -l < /tmp/valid-paths)" -ge 30
+          tar -xJf bootstrap/orion-source.tar.xz
+          rm -rf bootstrap .github/workflows/bootstrap-import.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "feat: publicar codigo completo Orion PS4 Store alpha 0.2"
+          git push origin HEAD:main
