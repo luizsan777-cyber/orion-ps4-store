@@ -1,0 +1,75 @@
+{
+  "version": "0.3.0-teste",
+  "distribution": "authorized-only",
+  "items": [
+    {
+      "id": "rayman-legends",
+      "title": "Rayman Legends",
+      "type": "commercial-reference",
+      "downloadEnabled": false,
+      "localization": {
+        "audioPtBr": "nao-confirmado",
+        "subtitlesPtBr": "nao-confirmado",
+        "interfacePtBr": "nao-confirmado"
+      },
+      "downloads": [
+        {
+          "label": "Versão PS4",
+          "status": "indisponivel",
+          "reason": "Exige fonte licenciada e metadados verificados"
+        },
+        {
+          "label": "Atualização",
+          "status": "indisponivel",
+          "reason": "Exige distribuição autorizada"
+        }
+      ]
+    },
+    {
+      "id": "orbita-neon",
+      "title": "Órbita Neon",
+      "type": "original-homebrew",
+      "downloadEnabled": false,
+      "localization": {
+        "audioPtBr": "sem-dialogos",
+        "subtitlesPtBr": "nao-aplicavel",
+        "interfacePtBr": "sim"
+      },
+      "downloads": [
+        {
+          "label": "Jogo base",
+          "status": "aguardando-pkg",
+          "reason": "Protótipo jogável apenas na prévia HTML"
+        },
+        {
+          "label": "Versão leve",
+          "status": "aguardando-pkg",
+          "reason": "Build PS4 ainda não gerada"
+        }
+      ]
+    },
+    {
+      "id": "labirinto-de-luz",
+      "title": "Labirinto de Luz",
+      "type": "original-homebrew",
+      "downloadEnabled": false,
+      "localization": {
+        "audioPtBr": "sem-dialogos",
+        "subtitlesPtBr": "nao-aplicavel",
+        "interfacePtBr": "sim"
+      },
+      "downloads": [
+        {
+          "label": "Jogo base",
+          "status": "aguardando-pkg",
+          "reason": "Protótipo jogável apenas na prévia HTML"
+        },
+        {
+          "label": "Versão leve",
+          "status": "aguardando-pkg",
+          "reason": "Build PS4 ainda não gerada"
+        }
+      ]
+    }
+  ]
+}
