@@ -1,0 +1,64 @@
+name: Orion TESTE - build experimental PS4 PKG
+on:
+  push:
+    branches: ["teste/alpha-0.4"]
+    paths:
+      - "teste/ps4/**"
+      - ".github/workflows/teste-pkg-build.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  cross-build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Instalar compilador LLVM e dependencias
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y clang lld curl ca-certificates
+      - name: Baixar e extrair OpenOrbis 0.5.4
+        shell: bash
+        run: |
+          set -euo pipefail
+          archive="$RUNNER_TEMP/toolchain-llvm-18.tar.gz"
+          curl -fsSL --retry 3 --connect-timeout 30 https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain/releases/download/v0.5.4/toolchain-llvm-18.tar.gz -o "$archive"
+          tar -xzf "$archive" -C "$RUNNER_TEMP"
+          sdk="$RUNNER_TEMP/OpenOrbis/PS4Toolchain"
+          test -f "$sdk/link.x" || (echo "OpenOrbis link.x nao encontrado" && exit 1)
+          echo "OO_PS4_TOOLCHAIN=$sdk" >> "$GITHUB_ENV"
+          ls -lh "$sdk/lib/libSDL2.a" "$sdk/bin/linux/create-fself" "$sdk/bin/linux/create-gp4" "$sdk/bin/linux/PkgTool.Core"
+      - name: Adicionar componentes de runtime presentes na toolchain
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd teste/ps4
+          mkdir -p sce_sys/about sce_module
+          right=$(find "$OO_PS4_TOOLCHAIN" -name right.sprx -type f -print -quit)
+          if [[ -z "$right" ]]; then
+            echo "right.sprx nao consta na toolchain. PKG nao gerado."
+            exit 1
+          fi
+          cp "$right" sce_sys/about/right.sprx
+          for module in libc.prx libSceFios2.prx; do
+            file=$(find "$OO_PS4_TOOLCHAIN" -name "$module" -type f -print -quit)
+            if [[ -n "$file" ]]; then cp "$file" "sce_module/$module"; fi
+          done
+      - name: Validar UI nativa e compilar PKG experimental
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd teste
+          npm test
+          cd ps4
+          make check
+          make
+          ls -lh *.pkg
+      - name: Disponibilizar PKG gerado como artefato de teste
+        uses: actions/upload-artifact@v4
+        with:
+          name: Orion_Store_TESTE_PKG_EXPERIMENTAL
+          path: teste/ps4/*.pkg
+          if-no-files-found: error
+          retention-days: 7
