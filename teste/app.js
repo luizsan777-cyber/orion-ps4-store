@@ -1,5 +1,5 @@
 'use strict';
-// Orion Teste 0.3 — nenhuma URL externa é aberta; pacotes indisponíveis nunca são baixados.
+// Orion Teste 0.4 — nenhuma URL externa é aberta; pacotes indisponíveis nunca são baixados.
 const $=s=>document.querySelector(s);
 const state={items:[],mode:'inicio',search:'',selected:null,game:null,keys:new Set(),lastPad:[],padDelay:0};
 const modeTitles={inicio:'Início',todos:'3 jogos',plataforma:'Plataforma',arcade:'Arcade',puzzle:'Quebra-cabeças',downloads:'Downloads'};
