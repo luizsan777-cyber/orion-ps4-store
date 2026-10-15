@@ -1,0 +1,115 @@
+name: Orion Port 0.6 - Catalogo PS4 com capas
+on:
+  push:
+    branches: ['teste/port-exe-0.6']
+    paths: ['.github/workflows/orion-port-0.6.yml', 'orion-port-src/**']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build-ps4-port:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 70
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Preparar codigo e dependencias
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq clang lld curl ca-certificates python3-pil
+          mkdir -p teste/ps4-port/assets teste/ps4-port/sce_sys
+          cat orion-port-src/part-0.txt orion-port-src/part-1.txt orion-port-src/part-2.txt orion-port-src/part-3.txt | base64 -d | tar -xz -f - -C teste/ps4-port
+          cp teste/ps4/sce_sys/icon0.png teste/ps4-port/sce_sys/icon0.png
+          cp teste/ps4/assets/font.bmp teste/ps4-port/assets/font.bmp
+          bash teste/ps4-port/test_syntax.sh
+      - name: Importar jogos oficiais (capas) e um PKG homebrew de teste
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 teste/ps4-port/tools/make_catalog.py --count 720
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          from PIL import Image,ImageDraw,ImageFont
+          a=Path('teste/ps4-port/assets')
+          rows=(a/'catalog.tsv').read_text(encoding='utf-8').splitlines()
+          assert len(rows)==720, ('incomplete official PS4 list',len(rows))
+          idx=len(rows)
+          with (a/'catalog.tsv').open('a',encoding='utf-8') as f:
+              f.write(f'{idx}\tPS4 Package Link - Homebrew\tBREW05001\n')
+          with (a/'sources.tsv').open('a',encoding='utf-8') as f:
+              f.write(f'{idx}\tGITHUB - PKG HOMEBREW\thttps://github.com/Ninedark9/PS4PackageLink/releases/download/v0.6.4/ps4packagelink_en.pkg\tIV0000-BREW05001_00-PS4PACKAGELINK00\t6619136\n')
+          atlas=a/f'poster{idx//81:02d}.bmp'
+          image=Image.open(atlas).convert('RGB')
+          tile=Image.new('RGB',(122,158),(21,98,166))
+          draw=ImageDraw.Draw(tile)
+          draw.text((14,48),'PS4 PKG',fill='white')
+          draw.text((14,75),'HOMEBREW',fill='white')
+          x=idx%81%9*122;y=(idx%81//9)*158
+          image.paste(tile,(x,y))
+          image.save(atlas,format='BMP')
+          stats=json.loads((a/'stats.json').read_text())
+          stats['titles']=721
+          stats['downloadable_games']=1
+          (a/'stats.json').write_text(json.dumps(stats,indent=2))
+          print(stats)
+          PY
+      - name: OpenOrbis 0.5.4
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL --retry 3 --connect-timeout 30 https://github.com/OpenOrbis/OpenOrbis-PS4-Toolchain/releases/download/v0.5.4/toolchain-llvm-18.tar.gz -o "$RUNNER_TEMP/llvm.tar.gz"
+          tar -xzf "$RUNNER_TEMP/llvm.tar.gz" -C "$RUNNER_TEMP"
+          sdk="$RUNNER_TEMP/OpenOrbis/PS4Toolchain"
+          test -f "$sdk/link.x"
+          echo "OO_PS4_TOOLCHAIN=$sdk" >> "$GITHUB_ENV"
+      - name: Preparar modulos OpenOrbis
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=teste/ps4-port
+          mkdir -p "$dir/sce_sys/about" "$dir/sce_module"
+          right=$(find "$OO_PS4_TOOLCHAIN" -name right.sprx -type f -print -quit)
+          test -n "$right"
+          cp "$right" "$dir/sce_sys/about/right.sprx"
+          for mod in libc.prx libSceFios2.prx; do
+            file=$(find "$OO_PS4_TOOLCHAIN" -name "$mod" -type f -print -quit)
+            if [[ -n "$file" ]]; then cp "$file" "$dir/sce_module/$mod"; fi
+          done
+      - name: Compilar PKG PS4
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd teste/ps4-port
+          make
+          ls -lh *.pkg
+          sha256sum *.pkg
+      - name: Artefato PKG
+        uses: actions/upload-artifact@v4
+        with:
+          name: Orion_Port_0_6_721_Jogos_PKG
+          path: teste/ps4-port/*.pkg
+          retention-days: 21
+      - name: Estatisticas do catalogo
+        uses: actions/upload-artifact@v4
+        with:
+          name: Orion_Port_0_6_Catalogo
+          path: |
+            teste/ps4-port/assets/catalog.tsv
+            teste/ps4-port/assets/stats.json
+            teste/ps4-port/assets/sources.tsv
+          retention-days: 21
+      - name: Publicar PKG experimental como prerelease
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          files=(teste/ps4-port/*.pkg)
+          if gh release view port-0.6 >/dev/null 2>&1; then
+            gh release upload port-0.6 "${files[@]}" --clobber
+          else
+            gh release create port-0.6 "${files[@]}" --title 'Orion Store Port PS4 0.6 (experimental)' --notes '721 titulos em catalogo (720 listagens oficiais PS4, 1 homebrew). Capas onde disponiveis, buscando metadados publicos. Apenas PS4 Package Link tem link BGFT direto autorizado. Nao e o catalogo privado de links do EXE. Nao testado no console real.' --prerelease --target "$GITHUB_SHA"
+          fi
