@@ -1,5 +1,5 @@
 {
- "name":"orion-ps4-store-teste","version":"0.3.0-test","private":true,
+ "name":"orion-ps4-store-teste","version":"0.4.0-test","private":true,
  "scripts":{"test":"node --test tests/*.test.js && bash ps4/test_model.sh && bash ps4/test_sdl_syntax.sh","build":"node build.js"},
  "license":"MIT","engines":{"node":">=18"}
 }
